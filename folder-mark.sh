@@ -1,45 +1,42 @@
-#!/bin/bash
+#!usr/bin/env false
 
-ROOT_DIR=~/.folder-mark/
-function fmark() {
-    MARK=$1
-    MARK_PATH="$ROOT_DIR$MARK"
-    MARK_LOC=`pwd`
+[[ -z "$FMARK_ROOT_DIR" ]] && FMARK_ROOT_DIR=~/.folder-mark
 
-    if [ ! -d $ROOT_DIR ]
-      then
-        mkdir $ROOT_DIR
-    fi
-
-    echo $MARK_LOC > $MARK_PATH
+function fmark {
+    mode=$1
+    shift || true
+    fmark::$mode
 }
 
-function fjump() {
-    MARK=$1
-    MARK_PATH="$ROOT_DIR$MARK"
-    MARK_LOC=`pwd`
+function fmark::mark {
+    MARK="$1"
+    MARK_PATH="$ROOT_DIR/$MARK"
+    MARK_LOC="$(pwd)"
 
-    if [ ! -d $ROOT_DIR ]
-      then
-        echo "Folder-Mark not setup!"
-        exit 1
-    fi
+    [[ ! -d $ROOT_DIR ]] && mkdir "$ROOT_DIR"
 
-    MARK_DEST=`cat $MARK_PATH`
+    echo "$MARK_LOC" > "$MARK_PATH"
+}
 
-    cd $MARK_DEST
+function fmark::jump {
+    MARK="$1"
+    MARK_PATH="$ROOT_DIR/$MARK"
+    MARK_LOC="$(pwd)"
+
+    [[ ! -d $ROOT_DIR ]] && (echo "Folder-Mark not setup!"; exit 1)
+
+    MARK_DEST=$(cat "$MARK_PATH")
+
+    cd "$MARK_DEST"
 
 }
 
-function funmark() {
-    MARK=$1
-    MARK_PATH="$ROOT_DIR$MARK"
-    MARK_LOC=`pwd`
+function fmark::unmark {
+    MARK="$1"
+    MARK_PATH="$ROOT_DIR/$MARK"
+    MARK_LOC="$(pwd)"
 
-    if [ ! -d $ROOT_DIR ]
-      then
-        exit 1
-    fi
+    [[ ! -d $ROOT_DIR ]] && exit 1
 
-    rm $MARK_PATH
+    rm "$MARK_PATH"
 }
