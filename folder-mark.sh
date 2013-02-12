@@ -5,25 +5,25 @@
 function fmark {
     mode=$1
     shift || true
-    fmark::$mode
+    fmark::$mode $*
 }
 
 function fmark::mark {
     MARK="$1"
-    MARK_PATH="$ROOT_DIR/$MARK"
+    MARK_PATH="$FMARK_ROOT_DIR/$MARK"
     MARK_LOC="$(pwd)"
 
-    [[ ! -d $ROOT_DIR ]] && mkdir "$ROOT_DIR"
-
+    [[ ! -d $FMARK_ROOT_DIR ]] && mkdir "$FMARK_ROOT_DIR"
+    
     echo "$MARK_LOC" > "$MARK_PATH"
 }
 
 function fmark::jump {
     MARK="$1"
-    MARK_PATH="$ROOT_DIR/$MARK"
+    MARK_PATH="$FMARK_ROOT_DIR/$MARK"
     MARK_LOC="$(pwd)"
 
-    [[ ! -d $ROOT_DIR ]] && (echo "Folder-Mark not setup!"; exit 1)
+    [[ ! -d $FMARK_ROOT_DIR ]] && {echo "Folder-Mark not setup!"; exit 1}
 
     MARK_DEST=$(cat "$MARK_PATH")
 
@@ -33,10 +33,10 @@ function fmark::jump {
 
 function fmark::unmark {
     MARK="$1"
-    MARK_PATH="$ROOT_DIR/$MARK"
+    MARK_PATH="$FMARK_ROOT_DIR/$MARK"
     MARK_LOC="$(pwd)"
 
-    [[ ! -d $ROOT_DIR ]] && exit 1
+    [[ ! -d $FMARK_ROOT_DIR ]] && exit 1
 
     rm "$MARK_PATH"
 }
