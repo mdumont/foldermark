@@ -23,12 +23,11 @@ function fmark::jump {
     MARK_PATH="$FMARK_ROOT_DIR/$MARK"
     MARK_LOC="$(pwd)"
 
-    [[ ! -d $FMARK_ROOT_DIR ]] && {echo "Folder-Mark not setup!"; exit 1}
+    [[ ! -d $FMARK_ROOT_DIR ]] && { echo "Folder-Mark not setup!"; return; }
 
     MARK_DEST=$(cat "$MARK_PATH")
 
     cd "$MARK_DEST"
-
 }
 
 function fmark::unmark {
