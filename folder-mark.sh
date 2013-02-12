@@ -66,6 +66,10 @@ function fmark::unmark {
 #-----------------------------------------#
 function fmark::list {
     MARKS="$FMARK_ROOT_DIR/*"
+    pushd $FMARK_ROOT_DIR > /dev/null
+    echo "Set: $(git branch | grep "^\*" | awk '{print $2}')"
+    popd > /dev/null
+    echo ""
     for f in $MARKS
         do
             echo "$(basename $f) -> $(cat $f)"
