@@ -2,12 +2,22 @@
 
 [[ -z "$FMARK_ROOT_DIR" ]] && FMARK_ROOT_DIR=~/.folder-mark
 
+#--------------------------------------------------#
+# FMark                                            #
+# Dispatches arguments $2-$N to the subcommand.    #
+# Parameters: $mode                                #
+#--------------------------------------------------#
 function fmark {
     mode=$1
     shift || true
     fmark::$mode $*
 }
 
+#-----------------------------------------#
+# Mark                                    #
+# Creates a mark with the given name.     #
+# Parameters: $mark_name                  #
+#-----------------------------------------#
 function fmark::mark {
     MARK="$1"
     MARK_PATH="$FMARK_ROOT_DIR/$MARK"
@@ -18,6 +28,11 @@ function fmark::mark {
     echo "$MARK_LOC" > "$MARK_PATH"
 }
 
+#-----------------------------------------#
+# Jump                                    #
+# Jumps to a mark with the given name.    #
+# Parameters: $mark_name                  #
+#-----------------------------------------#
 function fmark::jump {
     MARK="$1"
     MARK_PATH="$FMARK_ROOT_DIR/$MARK"
@@ -30,6 +45,11 @@ function fmark::jump {
     cd "$MARK_DEST"
 }
 
+#-----------------------------------------#
+# Unmark                                  #
+# Deletes a mark with the given name.     #
+# Parameters: $mark_name                  #
+#-----------------------------------------#
 function fmark::unmark {
     MARK="$1"
     MARK_PATH="$FMARK_ROOT_DIR/$MARK"
@@ -40,6 +60,10 @@ function fmark::unmark {
     rm "$MARK_PATH"
 }
 
+#-----------------------------------------#
+# List                                    #
+# Lists the marks in the current markset  #
+#-----------------------------------------#
 function fmark::list {
     MARKS="$FMARK_ROOT_DIR/*"
     for f in $MARKS
@@ -48,6 +72,10 @@ function fmark::list {
         done
 }
 
+#-----------------------------------------#
+# validate-git                            #
+# Validates git setup in the markdir.     #
+#-----------------------------------------#
 function fmark-internal::validate-git {
     HAS_GIT=$(which git)
     [[ -z $HAS_GIT ]] && { echo "Command requires git."; return 1; }
@@ -57,6 +85,11 @@ function fmark-internal::validate-git {
     return 0;
 }
 
+#-----------------------------------------#
+# create-set                              #
+# Creates a markset with the given name.  #
+# Parameters: $set_name                   #
+#-----------------------------------------#
 function fmark::create-set {
     SET_NAME=$1
     fmark-internal::validate-git
@@ -74,6 +107,11 @@ function fmark::create-set {
 
 }
 
+#-----------------------------------------#
+# delete-set                              #
+# Deletes a markset with the given name.  #
+# Parameters: $set_name                   #
+#-----------------------------------------#
 function fmark::delete-set {
     SET_NAME=$1
     fmark-internal::validate-git
@@ -81,6 +119,11 @@ function fmark::delete-set {
     #unimplemented
 }
 
+#-----------------------------------------#
+# Change-set                              #
+# Changes to the named mark set     .     #
+# Parameters: $set_name                   #
+#-----------------------------------------#
 function fmark::change-set {
     SET_NAME=$1
     fmark-internal::validate-git
