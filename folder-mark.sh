@@ -47,3 +47,53 @@ function fmark::list {
             echo "$(basename $f) -> $(cat $f)"
         done
 }
+
+function fmark-internal::validate-git {
+    HAS_GIT=$(which git)
+    [[ -z $HAS_GIT ]] && { echo "Command requires git."; return 1; }
+
+    [[ ! -d "$FMARK_ROOT_DIR/.git" ]] && { pushd $FMARK_ROOT_DIR > /dev/null; git init > /dev/null; git add . > /dev/null; git commit -m 'initial marks' > /dev/null; popd > /dev/null; }
+
+    return 0;
+}
+
+function fmark::create-set {
+    SET_NAME=$1
+    fmark-internal::validate-git
+    [[ $? -eq 1 ]] && { echo "Git setup error"; return; }
+
+    pushd $FMARK_ROOT_DIR > /dev/null
+    BRANCH_EXISTS=$(git branch | grep "$SET_NAME")
+    if [[ -z $BRANCH_EXISTS ]]
+        then
+            git checkout -b $SET_NAME > /dev/null
+        else
+            echo "Set already exists!"
+    fi
+    popd > /dev/null
+
+}
+
+function fmark::delete-set {
+    SET_NAME=$1
+    fmark-internal::validate-git
+    [[ $? -eq 1 ]] && { echo "Git setup error"; return; }
+    #unimplemented
+}
+
+function fmark::change-set {
+    SET_NAME=$1
+    fmark-internal::validate-git
+    [[ $? -eq 1 ]] && { echo "Git setup error"; return; }
+
+    pushd $FMARK_ROOT_DIR > /dev/null
+    BRANCH_EXISTS=$(git branch | grep "$SET_NAME")
+    if [[ -z $BRANCH_EXISTS ]]
+        then
+            echo "Set does not exist!"
+        else
+            git checkout $1 > /dev/null
+    fi
+
+    popd > /dev/null
+}
