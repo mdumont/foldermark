@@ -80,7 +80,14 @@ function fmark-internal::validate-git {
     HAS_GIT=$(which git)
     [[ -z $HAS_GIT ]] && { echo "Command requires git."; return 1; }
 
-    [[ ! -d "$FMARK_ROOT_DIR/.git" ]] && { pushd $FMARK_ROOT_DIR > /dev/null; git init > /dev/null; git add . > /dev/null; git commit -m 'initial marks' > /dev/null; popd > /dev/null; }
+    if [[ ! -d "$FMARK_ROOT_DIR/.git" ]] 
+        then
+            pushd $FMARK_ROOT_DIR > /dev/null; 
+            git init > /dev/null; 
+            git add . > /dev/null; 
+            git commit -m 'initial marks' > /dev/null; 
+            popd > /dev/null; 
+    fi
 
     return 0;
 }
