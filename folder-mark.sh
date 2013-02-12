@@ -39,3 +39,11 @@ function fmark::unmark {
 
     rm "$MARK_PATH"
 }
+
+function fmark::list {
+    MARKS="$FMARK_ROOT_DIR/*"
+    for f in $MARKS
+        do
+            echo "$(basename $f) -> $(cat $f)"
+        done
+}
