@@ -1,5 +1,5 @@
 _fmark() {
-    FMARK_SUB_COMMAND_LIST="delete-set delete mark jump create-set change-set list"
+    FMARK_SUB_COMMAND_LIST="delete-set unmark mark jump create-set change-set list"
     cur="${COMP_WORDS[COMP_CWORD]}"
     COMPREPLY=( $(compgen -W "$FMARK_SUB_COMMAND_LIST" -- $cur) )
 }
