@@ -5,7 +5,7 @@
 #--------------------------------------------------#
 # FMark                                            #
 # Dispatches arguments $2-$N to the subcommand.    #
-# Parameters: $mode                                #
+# Parameters: $1 the subcommand to be executed.    #
 #--------------------------------------------------#
 function fmark {
     mode=$1
@@ -16,7 +16,7 @@ function fmark {
 #-----------------------------------------#
 # Mark                                    #
 # Creates a mark with the given name.     #
-# Parameters: $mark_name                  #
+# Parameters: $1 The mark to be created.  #
 #-----------------------------------------#
 function fmark::mark {
     MARK="$1"
@@ -31,7 +31,7 @@ function fmark::mark {
 #-----------------------------------------#
 # Jump                                    #
 # Jumps to a mark with the given name.    #
-# Parameters: $mark_name                  #
+# Parameters: $1 The mark to go to.       #
 #-----------------------------------------#
 function fmark::jump {
     MARK="$1"
@@ -48,7 +48,7 @@ function fmark::jump {
 #-----------------------------------------#
 # Unmark                                  #
 # Deletes a mark with the given name.     #
-# Parameters: $mark_name                  #
+# Parameters: $1 The mark to delete.      #
 #-----------------------------------------#
 function fmark::unmark {
     MARK="$1"
@@ -100,11 +100,11 @@ function fmark-internal::validate-git {
     return 0;
 }
 
-#-----------------------------------------#
-# create-set                              #
-# Creates a markset with the given name.  #
-# Parameters: $set_name                   #
-#-----------------------------------------#
+#------------------------------------------------------------#
+# create-set                                                 #
+# Creates a markset with the given name and switches to it.  #
+# Parameters: $1 The set to create.                          #
+#------------------------------------------------------------#
 function fmark::create-set {
     SET_NAME=$1
     fmark-internal::validate-git && { echo "Git setup error"; return; }
@@ -120,22 +120,22 @@ function fmark::create-set {
     )
 }
 
-#-----------------------------------------#
-# delete-set                              #
-# Deletes a markset with the given name.  #
-# Parameters: $set_name                   #
-#-----------------------------------------#
+#------------------------------------------#
+# delete-set                               #
+# Deletes a markset with the given name.   #
+# Parameters: $1 The markset to be deleted.#
+#------------------------------------------#
 function fmark::delete-set {
     SET_NAME=$1
     fmark-internal::validate-git && { echo "Git setup error"; return; }
     #unimplemented
 }
 
-#-----------------------------------------#
-# Change-set                              #
-# Changes to the named mark set     .     #
-# Parameters: $set_name                   #
-#-----------------------------------------#
+#-------------------------------------------#
+# Change-set                                #
+# Changes to the named mark set.            #
+# Parameters: $1 The mark set to switch to. #
+#-------------------------------------------#
 function fmark::change-set {
     SET_NAME=$1
     fmark-internal::validate-git && { echo "Git setup error"; return; }
