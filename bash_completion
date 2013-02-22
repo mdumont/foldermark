@@ -1,6 +1,37 @@
 _fmark() {
-    FMARK_SUB_COMMAND_LIST="delete-set unmark mark jump create-set change-set list"
+    FMARK_SUB_COMMAND_LIST="mark unmark jump list create-set change-set delete-set"
     cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    case "${prev}" in
+        mark)
+            return 0
+            ;;
+        unmark)
+            local marks=$(for f in `ls -1 ~/.folder-mark/`; do echo ${f} ; done )
+            COMPREPLY=( $(compgen -W "${marks}" -- ${cur} ) )
+            return 0
+            ;;
+        jump)
+            return 0
+            ;;
+        list)
+            return 0
+            ;;
+        create-set)
+            return 0
+            ;;
+        change-set)
+            return 0
+            ;;
+        delete-set)
+            return 0
+            ;;
+        *)
+        ;;
+    esac
+
     COMPREPLY=( $(compgen -W "$FMARK_SUB_COMMAND_LIST" -- $cur) )
+    return 0
 }
 complete -F _fmark fmark
