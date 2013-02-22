@@ -8,11 +8,11 @@ _fmark() {
             return 0
             ;;
         unmark)
-            local marks=$(for f in `ls -1 ~/.folder-mark/`; do echo ${f} ; done )
-            COMPREPLY=( $(compgen -W "${marks}" -- ${cur} ) )
+            _complete_marks
             return 0
             ;;
         jump)
+            _complete_marks
             return 0
             ;;
         list)
@@ -33,5 +33,13 @@ _fmark() {
 
     COMPREPLY=( $(compgen -W "$FMARK_SUB_COMMAND_LIST" -- $cur) )
     return 0
+}
+
+_complete_marks() {
+    COMPREPLY=( $(compgen -W "$(for f in `ls -1 ~/.folder-mark/`; do echo ${f} ; done )" -- ${cur} ) )
+}
+
+_complete_sets() {
+    COMPREPLY=( $(compgen -W "$(for f in `ls -1 ~/.folder-mark/.git/refs/heads`; do echo ${f} ; done )" -- ${cur} ) )
 }
 complete -F _fmark fmark
