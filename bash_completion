@@ -22,9 +22,11 @@ _fmark() {
             return 0
             ;;
         change-set)
+            _complete_sets
             return 0
             ;;
         delete-set)
+            _complete_sets
             return 0
             ;;
         *)
